@@ -248,7 +248,6 @@ class Update {
                     if (lastSecond != hrtime[0]) {
                         lastSecond = hrtime[0];
 
-                        process.stdout.cursorTo(0);
                         process.stdout.write("Downloading " +
                             Math.floor(currentLen * 100 / totalLen) + "% complete.");
                     }
@@ -256,7 +255,6 @@ class Update {
 
                 response.pipe(fs.createWriteStream(zipFileName));
                 response.on("end", function() {
-                    process.stdout.cursorTo(0);
                     process.stdout.write("Downloading 100% complete (" + totalLen +
                         " bytes transferred).\n");
 
