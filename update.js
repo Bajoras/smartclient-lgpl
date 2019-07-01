@@ -239,7 +239,7 @@ class Update {
                     totalLen = parseInt(response.headers['content-length'])
                 ;
 
-                process.stdout.write("Downloading: ...");
+                console.log("Downloading...");
 
                 let lastSecond = 0;
                 response.on("data", function (chunk) {
@@ -248,7 +248,7 @@ class Update {
                     if (lastSecond != hrtime[0]) {
                         lastSecond = hrtime[0];
 
-                        process.stdout.write("Downloading " +
+                        console.log("Downloading " +
                             Math.floor(currentLen * 100 / totalLen) + "% complete.");
                     }
                 });
