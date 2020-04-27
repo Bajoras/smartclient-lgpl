@@ -21,13 +21,9 @@
   "name": "smartclient-lgpl",
   "optionalDependencies": {},
   "scripts": {
-    "preinstall": "npx npm-force-resolutions",
     "install": "node update.js",
     "uninstall": "node uninstall.js",
     "update": "node update.js"
-  },
-  "resolutions": {
-    "graceful-fs": "^4.2.3"
   },
   "version": "0.3.0"
 }
