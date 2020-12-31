@@ -40,6 +40,7 @@ const ps = require("prompt-sync")();
 const Const = require("./Const");
 
 let config = {};
+let configDir = path.join(__dirname, Const.SMARTCLIENT_CONF);
 
 /**
  * class for SmartClient runtime install/update
@@ -51,8 +52,8 @@ class Update {
      */
     static main() {
         // load persistent package configuration
-        if (fs.existsSync(Const.SMARTCLIENT_CONF)) {
-            config = fs.readJsonSync(Const.SMARTCLIENT_CONF);
+        if (fs.existsSync(configDir)) {
+            config = fs.readJsonSync(configDir);
         }
 
         // for update, show details of current installation
@@ -208,7 +209,7 @@ class Update {
                         if (yes) config.yes = true;
                         else delete config.yes;
 
-                        fs.writeJsonSync(Const.SMARTCLIENT_CONF, config, {spaces: 4});
+                        fs.writeJsonSync(configDir, config, {spaces: 4});
                         console.log("Configuration updated.");
                     }
 
@@ -341,7 +342,7 @@ class Update {
                             }
                         }
 
-                        fs.writeJsonSync(Const.SMARTCLIENT_CONF, config, {spaces: 4});
+                        fs.writeJsonSync(configDir, config, {spaces: 4});
 
                         console.log("Configuration updated.");
 
@@ -386,7 +387,7 @@ class Update {
 
         if (updated) {
             status += "  Configuration updated.";
-            fs.writeJsonSync(Const.SMARTCLIENT_CONF, config, {spaces: 4});
+            fs.writeJsonSync(configDir, config, {spaces: 4});
         }
 
         console.log(status);
