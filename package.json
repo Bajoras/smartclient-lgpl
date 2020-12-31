@@ -22,7 +22,7 @@
   "optionalDependencies": {},
   "scripts": {
     "install": "node update.js",
-    "uninstall": "node uninstall.js",
+    "remove": "node uninstall.js",
     "update": "node update.js"
   },
   "version": "0.3.0"
