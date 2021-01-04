@@ -32,7 +32,7 @@
 const fs = require("fs-extra");
 const path = require("path");
 const https = require("https");
-const unzip = require("unzip");
+const unzip = require("unzipper");
 const npmurl = require("url");
 const ps = require("prompt-sync")();
 
