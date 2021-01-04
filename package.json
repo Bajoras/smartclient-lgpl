@@ -22,11 +22,11 @@
   "optionalDependencies": {},
   "scripts": {
     "install": "node update.js",
-    "uninstall": "node uninstall.js",
     "update": "node update.js"
   },
   "version": "0.3.0",
   "bin": {
-    "smartClientInstall": "./update.js"
+    "smartClientInstall": "./update.js",
+    "smartClientUninstall": "./uninstall.js"
   }
 }
