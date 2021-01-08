@@ -193,8 +193,8 @@ class Update {
             let realDate = link.match(/2[0-9]{3}-[0-9]{2}-[0-9]{2}/)[0];
 
             let isomorphicPath = path.join(location, Const.ISOMORPHIC_DIR);
-            fs.access(isomorphicPath, fs.constants.R_OK | fs.constants.W_OK, function (err) {
-                if (!err) {
+            fs.pathExists(isomorphicPath, function (err, exists) {
+                if (exists) {
                     // ask user to skip if there's no newer build and no configuration has changed
                     if (location == config.location &&
                         branch == config.branch &&
