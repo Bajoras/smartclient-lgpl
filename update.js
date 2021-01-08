@@ -192,36 +192,40 @@ class Update {
 
             let realDate = link.match(/2[0-9]{3}-[0-9]{2}-[0-9]{2}/)[0];
 
-            // ask user to skip if there's no newer build and no configuration has changed
-            if (location == config.location &&
-                branch   == config.branch &&
-                realDate == config.date &&
-                runtime  == config.runtime &&
-                !skins   == !config.skins)
-            {
-                let skip = Update._prompt(
-                    "It looks like we're about to re-download the same core runtime(s) " +
-                    "already installed with no configuration change.  Skip? [yes]: ", yes);
-                if (skip != null && (skip.trim() === "" || skip.match(/^y(es)?$/i))) {
+            let isomorphicPath = path.join(location, Const.ISOMORPHIC_DIR);
+            fs.access(isomorphicPath, fs.constants.R_OK | fs.constants.W_OK, function (err) {
+                if (!err) {
+                    // ask user to skip if there's no newer build and no configuration has changed
+                    if (location == config.location &&
+                        branch == config.branch &&
+                        realDate == config.date &&
+                        runtime == config.runtime &&
+                        !skins == !config.skins) {
+                        let skip = Update._prompt(
+                            "It looks like we're about to re-download the same core runtime(s) " +
+                            "already installed with no configuration change.  Skip? [yes]: ", yes);
+                        if (skip != null && (skip.trim() === "" || skip.match(/^y(es)?$/i))) {
 
-                    // update "yes" option even though new runtime core(s) wont' be installed
-                    if (yes != config.yes) {
-                        if (yes) config.yes = true;
-                        else delete config.yes;
+                            // update "yes" option even though new runtime core(s) wont' be installed
+                            if (yes != config.yes) {
+                                if (yes) config.yes = true;
+                                else delete config.yes;
 
-                        fs.writeJsonSync(configDir, config, {spaces: 4});
-                        console.log("Configuration updated.");
+                                fs.writeJsonSync(configDir, config, {spaces: 4});
+                                console.log("Configuration updated.");
+                            }
+
+                            console.log("Skipping re-installation.\n");
+
+                            if (Const.SUPPORTS_MODULES) {
+                                Update._startOptionalModulesUpdate(location, query, branch, date,
+                                    runtime);
+                            }
+                            process.exit();
+                        }
                     }
-
-                    console.log("Skipping re-installation.\n");
-
-                    if (Const.SUPPORTS_MODULES) {
-                        Update._startOptionalModulesUpdate(location, query, branch, date,
-                            runtime);
-                    }
-                    return;
                 }
-            }
+            })
 
             // downloading and installing SmartClient runtime
             const tmpDirName = path.join(__dirname, Const.TMP);
