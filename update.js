@@ -58,7 +58,7 @@ class Update {
 
         // for update, show details of current installation
         if (config.date) {
-            let isomorphicPath = path.join(config.location, Const.ISOMORPHIC_DIR);
+            let isomorphicPath = path.join(__dirname, config.location, Const.ISOMORPHIC_DIR);
             console.log("SmartClient " + config.branch + ", build " + config.date +
                 ", runtime(s) are currently installed at " + isomorphicPath +
                 " according to configuration.");
@@ -140,7 +140,7 @@ class Update {
         let yes = env.npm_config_yes != null ? env.npm_config_yes : config.yes;
 
         // prompt for install/update
-        let isomorphicPath = path.join(location, Const.ISOMORPHIC_DIR),
+        let isomorphicPath = path.join(__dirname, location, Const.ISOMORPHIC_DIR),
             prompt = "Install SmartClient " + branch + " runtime, build date " +
                 date + ", at " + isomorphicPath;
 
@@ -192,7 +192,7 @@ class Update {
 
             let realDate = link.match(/2[0-9]{3}-[0-9]{2}-[0-9]{2}/)[0];
 
-            let isomorphicPath = path.join(location, Const.ISOMORPHIC_DIR);
+            let isomorphicPath = path.join(__dirname, location, Const.ISOMORPHIC_DIR);
             fs.pathExists(isomorphicPath, function (err, exists) {
                 if (exists) {
                     // ask user to skip if there's no newer build and no configuration has changed
@@ -272,12 +272,12 @@ class Update {
                     })).on("close", function() {
 
                         if (config.location) { // remove existing installation, if any
-                            let oldPath = path.join(config.location, Const.ISOMORPHIC_DIR);
+                            let oldPath = path.join(__dirname, config.location, Const.ISOMORPHIC_DIR);
                             console.log("Removing old SmartClient runtime(s) at " + oldPath);
                             fs.removeSync(oldPath);
                         }
 
-                        let isomorphicPath = path.join(location, Const.ISOMORPHIC_DIR);
+                        let isomorphicPath = path.join(__dirname, location, Const.ISOMORPHIC_DIR);
                         console.log("Copying SmartClient runtime(s) to " + isomorphicPath);
 
                         fs.removeSync(isomorphicPath);
@@ -526,7 +526,7 @@ class Update {
                     path: tmpDirName
                 })).on("close", function() {
 
-                    let isomorphicPath = path.join(location, Const.ISOMORPHIC_DIR);
+                    let isomorphicPath = path.join(__dirname, location, Const.ISOMORPHIC_DIR);
                     console.log("Installing " + moduleName + " module to " + isomorphicPath);
 
                     if (runtime == "release" || runtime == "both") {
@@ -562,7 +562,7 @@ class Update {
      * @param {string} moduleFile - file name (JS implementation) of module
      */
     static _removeModule(location, moduleName, moduleFile) {
-        let isomorphicPath = path.join(location, Const.ISOMORPHIC_DIR);
+        let isomorphicPath = path.join(__dirname, location, Const.ISOMORPHIC_DIR);
         fs.removeSync(path.join(isomorphicPath, Const.RELEASE_MODULES, moduleFile))
         fs.removeSync(path.join(isomorphicPath, Const.RELEASE_MODULES, moduleFile + ".gz"))
         fs.removeSync(path.join(isomorphicPath, Const.DEBUG_MODULES,   moduleFile));
