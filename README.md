@@ -25,6 +25,9 @@ where the supported flags are:
                              default is to only install Tahoe
 
      --yes[=<boolean>]       assume answer 'yes' to prompts with default
+     
+     --excludeDefinition[=<boolean>] exclude definition or not;
+                                     default is to exclude
 
 After installation, command-line configuration is persisted, so command-line arguments only
 need to be supplied when updating if the desired configuration has changed.  

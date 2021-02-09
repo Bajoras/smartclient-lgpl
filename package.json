@@ -25,7 +25,7 @@
     "uninstall": "node uninstall.js",
     "update": "node update.js"
   },
-  "version": "0.3.0",
+  "version": "1.0.1",
   "bin": {
     "smartClientInstall": "./update.js",
     "smartClientUninstall": "./uninstall.js"

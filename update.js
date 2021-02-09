@@ -155,8 +155,9 @@ class Update {
                 "?USERNAME=" + username + "&PASSWORD=" + encodeURIComponent(password) : "";
             Update._getSmartClientLink(branch, date, query, Const.DOWNLOAD_DIR,
                 function (link) {
+                    let excludeDefinition = env.npm_config_location || config.excludeDefinition || true;
                     Update._updateRuntimeCore(location, link, query, branch, date, runtime,
-                        skins, username, yes);
+                        skins, username, yes, excludeDefinition);
                 }
             );
         }
@@ -176,9 +177,10 @@ class Update {
      * @param {boolean} skins - install all skins
      * @param {string} username - account username
      * @param {boolean} yes - answer "yes" to prompt
+     * @param {boolean} excludeDefinition - exclude definition file
      */
     static _updateRuntimeCore(location, link, query, branch, date, runtime, skins, username,
-                              yes)
+                              yes, excludeDefinition)
     {
         // if not present, create destination directory with user RWX access
         fs.ensureDirSync(location, {mode: 0o700});
@@ -200,7 +202,8 @@ class Update {
                         branch == config.branch &&
                         realDate == config.date &&
                         runtime == config.runtime &&
-                        !skins == !config.skins) {
+                        !skins == !config.skins &&
+                        excludeDefinition == config.excludeDefinition) {
                         let skip = Update._prompt(
                             "It looks like we're about to re-download the same core runtime(s) " +
                             "already installed with no configuration change.  Skip? [yes]: ", yes);
@@ -289,6 +292,11 @@ class Update {
                         fs.copySync(path.join(tmpDirName, packageDir, Const.SMARTCLIENT_DIR,
                             Const.ISOMORPHIC_DIR), isomorphicPath, {
                             filter: function (src, dest) {
+                                // exclude unwanted definition file
+                                if (excludeDefinition && src.endsWith(Const.ISOMORPHIC_DEFINITION_FILENAME)) {
+                                    return false;
+                                }
+
                                 // exclude unwanted runtimes 
                                 if (runtime == "release" &&
                                     dest.endsWith(Const.DEBUG_MODULES) ||
@@ -306,6 +314,10 @@ class Update {
                                 return true;
                             }
                         });
+
+                        if (excludeDefinition) {
+                            console.log("Excluded isomorphic definition file " + Const.ISOMORPHIC_DEFINITION_FILENAME)
+                        }
 
                         if (runtime == "both") {
                             console.log("Installed debug and release runtimes.");
@@ -328,6 +340,7 @@ class Update {
                         config.runtime  = runtime;
                         config.branch   = branch;
                         config.date     = realDate;
+                        config.excludeDefinition = excludeDefinition;
 
                         if (date == Const.LATEST_BUILD) config.latest = true;
                         else                            delete config.latest;
@@ -683,6 +696,8 @@ class Update {
             "     --skins[=<boolean>]     whether to install all skins or not;\n" +
             "                             default is to only install " + default_skin + "\n\n" +
             "     --yes[=<boolean>]       assume answer 'yes' to prompts with default\n\n" +
+            "     --excludeDefinition[=<boolean>] exclude definition or not;\n\n" +
+            "                             default is to exclude\n\n" +
 
             (Const.REQUIRES_ACCOUNT ? (
                 "     --username=<string>     username for account on www.smartclient.com\n\n" +

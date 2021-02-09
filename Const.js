@@ -262,6 +262,15 @@ class Const {
         return "isomorphic";
     }
 
+    /**
+     * Name of isomorphic definition file.
+     *
+     * @type {string}
+     */
+    static get ISOMORPHIC_DEFINITION_FILENAME() {
+        return "smartclient.d.ts";
+    }
+
 }
 
 module.exports = Const;
