@@ -651,7 +651,13 @@ class Update {
         request.headers = {
             "User-Agent": "npmjs / " + process.env.npm_package_name
         };
-        https.get(request, callback);
+        https.get(request, function(response) {
+            if(response.statusCode === 301 || response.statusCode === 302) {
+                Update._httpsGet(response.headers.location, callback);
+            } else {
+                callback(response);
+            }
+        });
     }
 
     /**
