@@ -204,7 +204,7 @@ class Const {
      * @type {string}
      */
     static get DEVELOP_BRANCH() {
-        return "13.0";
+        return "13.1";
     }
 
     /**
@@ -213,7 +213,7 @@ class Const {
      * @type {string}
      */
     static get DEFAULT_BRANCH() {
-        return "12.1";
+        return "13.0";
     }
 
     /**
